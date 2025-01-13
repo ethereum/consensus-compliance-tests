@@ -1,0 +1,50 @@
+name: Consensus Compliance Tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Checkout eth2.0-specs
+      uses: actions/checkout@v4
+      with:
+        repository: ericsson49/eth2.0-specs
+        ref: fc-compliance2
+        path: eth2.0-specs
+
+    - name: Setup Python environment
+      working-directory: eth2.0-specs/tests/generators/fork_choice_generated
+      run: |
+        python -m venv venv
+        . venv/bin/activate
+        pip install wheel
+        echo '\nGENERATOR_MODE = MODE_MULTIPROCESSING\n' >> ../../core/pyspec/eth2spec/gen_helpers/gen_base/settings.py
+        pip install -r requirements.txt
+
+    - name: Run tests
+      working-directory: eth2.0-specs/tests/generators/fork_choice_generated
+      run: |
+        . venv/bin/activate
+        mkdir tests_tiny
+        python test_gen.py -o tests_tiny --fc-gen-config tiny/test_gen.yaml
+        tar -czf tests_tiny.tar.gz tests_tiny
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: eth2.0-specs/tests/generators/fork_choice_generated/tests_tiny.tar.gz
