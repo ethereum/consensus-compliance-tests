@@ -34,7 +34,9 @@ jobs:
         python -m venv venv
         . venv/bin/activate
         pip install wheel
-        echo '\nGENERATOR_MODE = MODE_MULTIPROCESSING\n' >> ../../core/pyspec/eth2spec/gen_helpers/gen_base/settings.py
+        echo "
+        GENERATOR_MODE = MODE_MULTIPROCESSING
+        " >> ../../core/pyspec/eth2spec/gen_helpers/gen_base/settings.py
         pip install -r requirements.txt
 
     - name: Run tests
