@@ -23,3 +23,4 @@ pip install -r requirements.txt
 mkdir tests_tiny
 python test_gen.py -o tests_tiny --fc-gen-config tiny/test_gen.yaml
 ```
+
