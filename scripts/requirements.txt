@@ -1,0 +1,8 @@
+tqdm
+pathos
+ruamel.yaml==0.17.21
+wheel
+setuptools
+python-snappy
+# TODO: remove this once the eth2spec FC compliance tests are merged into the main branch
+eth2spec @ git+https://github.com/ericsson49/eth2.0-specs.git@fc-compliance2

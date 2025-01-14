@@ -1,13 +1,27 @@
-name: Consensus Compliance Tests
-
+name: Generate Compliance Fork Choice Tests
+# TODO: Update the workflow repository to use the canonical repository once PRs are merged in
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      specs_repo:
+        description: 'eth2.0-specs repository URL'
+        required: false
+        default: 'ericsson49/eth2.0-specs'
+        type: string
+      specs_ref:
+        description: 'eth2.0-specs branch/tag/commit'
+        required: false
+        default: 'fc-compliance2'
+        type: string
+      specs_path:
+        description: 'Path to clone eth2.0-specs'
+        required: false
+        default: 'eth2.0-specs'
+        type: string
 
 jobs:
-  test:
+  generate:
+    name: Generate Compliance Fork Choice Test Cases
     runs-on: [self-hosted-ghr, size-xl-x64]
     
     steps:
@@ -28,12 +42,12 @@ jobs:
     - name: Checkout eth2.0-specs
       uses: actions/checkout@v4
       with:
-        repository: ericsson49/eth2.0-specs
-        ref: fc-compliance2
-        path: eth2.0-specs
+        repository: ${{ github.event.inputs.specs_repo || 'ericsson49/eth2.0-specs' }}
+        ref: ${{ github.event.inputs.specs_ref || 'fc-compliance2' }}
+        path: ${{ github.event.inputs.specs_path || 'eth2.0-specs' }}
 
     - name: Setup Python environment
-      working-directory: eth2.0-specs/tests/generators/fork_choice_generated
+      working-directory: ${{ github.event.inputs.specs_path || 'eth2.0-specs' }}/tests/generators/fork_choice_generated
       run: |
         python3 -m venv .venv
         . .venv/bin/activate
@@ -44,17 +58,16 @@ jobs:
         GENERATOR_MODE = MODE_MULTIPROCESSING
         " >> ../../core/pyspec/eth2spec/gen_helpers/gen_base/settings.py
 
-    - name: Run tests
-      working-directory: eth2.0-specs/tests/generators/fork_choice_generated
+    - name: Generate test cases
+      working-directory: ${{ github.event.inputs.specs_path || 'eth2.0-specs' }}/tests/generators/fork_choice_generated
       run: |
         . .venv/bin/activate
         mkdir tests_tiny
         python3 test_gen.py -o tests_tiny --fc-gen-config tiny/test_gen.yaml
-        tar -czf tests_tiny.tar.gz tests_tiny
 
-    - name: Upload test results
+    - name: Upload test cases
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: test-results
-        path: eth2.0-specs/tests/generators/fork_choice_generated/tests_tiny.tar.gz
+        name: fork-choice-test-cases
+        path: ${{ github.event.inputs.specs_path || 'eth2.0-specs' }}/tests/generators/fork_choice_generated/tests_tiny/
