@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    runs-on: size-xl-x64
+    runs-on: [self-hosted-ghr, size-xl-x64]
     
     steps:
     - uses: actions/checkout@v4
