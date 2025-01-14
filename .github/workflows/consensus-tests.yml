@@ -1,10 +1,6 @@
 name: Generate Compliance Fork Choice Tests
 # TODO: Update the workflow repository to use the canonical repository once PRs are merged in
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
   workflow_dispatch:
     inputs:
       specs_repo:
