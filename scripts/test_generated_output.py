@@ -137,7 +137,7 @@ def gather_tests(tests_dir) -> Iterable[TestInfo]:
                 yield TestInfo(preset, fork, test_dir)
 
 
-def runt_tests_parallel(tests_dir, num_proc=settings.NUM_PROCESS):
+def run_tests_parallel(tests_dir, num_proc=settings.NUM_PROCESS):
     def runner(test_info: TestInfo):
         try:
             run_test(test_info)
@@ -166,7 +166,7 @@ def main():
         help="directory with generated tests"
     )
     args = arg_parser.parse_args()
-    runt_tests_parallel(args.test_dir)
+    run_tests_parallel(args.test_dir)
 
 
 if __name__ == '__main__':
