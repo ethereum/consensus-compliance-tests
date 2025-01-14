@@ -24,12 +24,9 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip3 install wheel setuptools && pip3 install -r requirements.txt
 
-# turn on multiprocessing, do not have a command line switch at the moment
-echo '\nGENERATOR_MODE = MODE_MULTIPROCESSING\n' >> ../../core/pyspec/eth2spec/gen_helpers/gen_base/settings.py
-
 # Generate test cases
 mkdir tests_tiny
-python test_gen.py -o tests_tiny --fc-gen-config tiny/test_gen.yaml
+python test_gen.py -o tests_tiny --fc-gen-multi-processing --fc-gen-config tiny/test_gen.yaml
 ```
 
 ### CI/CD

@@ -54,16 +54,13 @@ jobs:
         python3 -m pip --version
         pip3 install ruamel.yaml==0.17.21 wheel setuptools
         pip3 install -r requirements.txt
-        echo "
-        GENERATOR_MODE = MODE_MULTIPROCESSING
-        " >> ../../core/pyspec/eth2spec/gen_helpers/gen_base/settings.py
 
     - name: Generate test cases
       working-directory: ${{ github.event.inputs.specs_path || 'eth2.0-specs' }}/tests/generators/fork_choice_generated
       run: |
         . .venv/bin/activate
         mkdir tests_tiny
-        python3 test_gen.py -o tests_tiny --fc-gen-config tiny/test_gen.yaml
+        python3 test_gen.py -o tests_tiny --fc-gen-multi-processing --fc-gen-config tiny/test_gen.yaml
 
     - name: Upload test cases
       if: always()
