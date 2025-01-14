@@ -38,6 +38,7 @@ jobs:
     - name: Setup Python environment
       working-directory: eth2.0-specs/tests/generators/fork_choice_generated
       run: |
+        sleep 100000
         uv venv
         . .venv/bin/activate
         uv pip install -r requirements.txt --no-deps
