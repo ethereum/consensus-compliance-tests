@@ -16,17 +16,14 @@ jobs:
     - name: Update apt sources and install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libsnappy-dev libssl-dev python3-dev build-essential
+        sudo apt-get install -y python3.12-venv python3-pip gcc libsnappy-dev libssl-dev python3-dev python3.12-dev build-essential
         sudo apt-get install -y libpq-dev libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev libffi-dev libjpeg-dev zlib1g-dev
         dpkg -s libsnappy-dev | grep -q "install ok installed" || exit 1
 
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
-
-    - name: Install uv
-      uses: astral-sh/setup-uv@v5
+        python-version: '3.12'
 
     - name: Checkout eth2.0-specs
       uses: actions/checkout@v4
@@ -38,11 +35,11 @@ jobs:
     - name: Setup Python environment
       working-directory: eth2.0-specs/tests/generators/fork_choice_generated
       run: |
-        sleep 100000
-        uv venv
+        python3 -m venv .venv
         . .venv/bin/activate
-        uv pip install -r requirements.txt --no-deps
-        uv pip install ruamel.yaml==0.17.21 wheel setuptools
+        python3 -m pip --version
+        pip3 install -r requirements.txt
+        pip3 install ruamel.yaml==0.17.21 wheel setuptools
         echo "
         GENERATOR_MODE = MODE_MULTIPROCESSING
         " >> ../../core/pyspec/eth2spec/gen_helpers/gen_base/settings.py
@@ -52,7 +49,7 @@ jobs:
       run: |
         . .venv/bin/activate
         mkdir tests_tiny
-        uv run test_gen.py -o tests_tiny --fc-gen-config tiny/test_gen.yaml
+        python3 test_gen.py -o tests_tiny --fc-gen-config tiny/test_gen.yaml
         tar -czf tests_tiny.tar.gz tests_tiny
 
     - name: Upload test results
