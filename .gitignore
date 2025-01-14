@@ -1,0 +1,3 @@
+.venv/
+*.tar.gz
+tests_tiny/

@@ -51,5 +51,5 @@ Generated test cases are available as downloadable artifacts from the GitHub Act
 
 1. Move into the scripts directory: `cd scripts`
 2. Download and unzip the test cases from the workflow run
-3. Install the requirements: `pip install -r requirements.txt`
+3. Install the requirements: `pip3 install ruamel.yaml==0.17.21 wheel setuptools && pip3 install -r requirements.txt`
 4. Run the test cases with your fork choice implementation, e.g: `python3 test_generated_output.py -i tests_tiny`
