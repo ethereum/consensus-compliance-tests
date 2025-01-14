@@ -16,8 +16,8 @@ jobs:
     - name: Update apt sources and install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libsnappy-dev libssl-dev python3-dev python3.11-dev python-dev build-essential
-        sudo apt-get install -y libpq-dev python-dev libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev libffi-dev libjpeg-dev zlib1g-dev
+        sudo apt-get install -y libsnappy-dev libssl-dev python3-dev python3.11-dev build-essential
+        sudo apt-get install -y libpq-dev libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev libffi-dev libjpeg-dev zlib1g-dev
         dpkg -s libsnappy-dev | grep -q "install ok installed" || exit 1
 
     - name: Set up Python
