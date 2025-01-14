@@ -40,7 +40,7 @@ jobs:
       run: |
         uv venv
         . .venv/bin/activate
-        uv add wheel
+        uv pip install wheel
         echo "
         GENERATOR_MODE = MODE_MULTIPROCESSING
         " >> ../../core/pyspec/eth2spec/gen_helpers/gen_base/settings.py
