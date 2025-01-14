@@ -23,7 +23,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.12'
+        python-version: '3.12.3'
 
     - name: Checkout eth2.0-specs
       uses: actions/checkout@v4
@@ -38,8 +38,8 @@ jobs:
         python3 -m venv .venv
         . .venv/bin/activate
         python3 -m pip --version
-        pip3 install -r requirements.txt
         pip3 install ruamel.yaml==0.17.21 wheel setuptools
+        pip3 install -r requirements.txt
         echo "
         GENERATOR_MODE = MODE_MULTIPROCESSING
         " >> ../../core/pyspec/eth2spec/gen_helpers/gen_base/settings.py
