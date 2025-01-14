@@ -25,6 +25,9 @@ jobs:
       with:
         python-version: '3.11'
 
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+
     - name: Checkout eth2.0-specs
       uses: actions/checkout@v4
       with:
@@ -35,21 +38,21 @@ jobs:
     - name: Setup Python environment
       working-directory: eth2.0-specs/tests/generators/fork_choice_generated
       run: |
-        python -m venv venv
-        . venv/bin/activate
-        pip install wheel
+        uv venv
+        . .venv/bin/activate
+        uv add wheel
         echo "
         GENERATOR_MODE = MODE_MULTIPROCESSING
         " >> ../../core/pyspec/eth2spec/gen_helpers/gen_base/settings.py
-        pip install -r requirements.txt
-        pip install --upgrade setuptools
+        uv pip install -r requirements.txt
+        uv pip install --upgrade setuptools
 
     - name: Run tests
       working-directory: eth2.0-specs/tests/generators/fork_choice_generated
       run: |
-        . venv/bin/activate
+        . .venv/bin/activate
         mkdir tests_tiny
-        python test_gen.py -o tests_tiny --fc-gen-config tiny/test_gen.yaml
+        uv run test_gen.py -o tests_tiny --fc-gen-config tiny/test_gen.yaml
         tar -czf tests_tiny.tar.gz tests_tiny
 
     - name: Upload test results
