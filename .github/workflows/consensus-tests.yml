@@ -16,7 +16,8 @@ jobs:
     - name: Update apt sources and install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libsnappy-dev python3-dev
+        sudo apt-get install -y libsnappy-dev python3-dev build-essential
+        dpkg -s libsnappy-dev | grep -q "install ok installed" || exit 1
 
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -40,6 +41,7 @@ jobs:
         GENERATOR_MODE = MODE_MULTIPROCESSING
         " >> ../../core/pyspec/eth2spec/gen_helpers/gen_base/settings.py
         pip install -r requirements.txt
+        pip install --upgrade setuptools
 
     - name: Run tests
       working-directory: eth2.0-specs/tests/generators/fork_choice_generated
