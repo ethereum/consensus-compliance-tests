@@ -40,12 +40,11 @@ jobs:
       run: |
         uv venv
         . .venv/bin/activate
-        uv pip install wheel
+        uv pip install -r requirements.txt --no-deps
+        uv pip install ruamel.yaml==0.17.21 wheel setuptools
         echo "
         GENERATOR_MODE = MODE_MULTIPROCESSING
         " >> ../../core/pyspec/eth2spec/gen_helpers/gen_base/settings.py
-        uv pip install -r requirements.txt
-        uv pip install --upgrade setuptools
 
     - name: Run tests
       working-directory: eth2.0-specs/tests/generators/fork_choice_generated
