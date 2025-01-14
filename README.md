@@ -46,6 +46,7 @@ You can manually trigger the workflow with custom parameters:
 ## Usage
 Generated test cases are available as downloadable artifacts from the GitHub Actions workflow runs. 
 
-1. Unzip the test cases download from the workflow run
-2. Install `tqdm` via `pip install tqdm`
-3. Run the test cases with your fork choice implementation, e.g: `python3 test_run.py -i test_tiny`
+1. Move into the scripts directory: `cd scripts`
+2. Download and unzip the test cases from the workflow run
+3. Install the requirements: `pip install -r requirements.txt`
+4. Run the test cases with your fork choice implementation, e.g: `python3 test_generated_output.py -i tests_tiny`
